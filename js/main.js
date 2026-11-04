@@ -71,12 +71,12 @@
 
   /* ---------- music: "This Town" starts on the tap that opens the present ---------- */
   var music = (function () {
-    var song = $('#song'), btn = $('#soundBtn'), START = 7.5, BASE = 0.55;
+    var song = $('#song'), btn = $('#soundBtn'), START = 50, BASE = 0.55;
     var started = false, muted = false, ducked = false;
     function fade(v, s, done) { gsap.to(song, { volume: v, duration: s, ease: 'sine.inOut', overwrite: true, onComplete: done }); }
     function play() { var pr = song.play(); if (pr) pr.catch(function () {}); }
     function ui() { var on = started && !muted && !ducked; btn.classList.toggle('off', !on); btn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
-    song.addEventListener('ended', function () { song.currentTime = START; play(); });   // loop past the quiet intro
+    song.addEventListener('ended', function () { song.currentTime = START; play(); });   // loop back to the main part
     btn.addEventListener('click', function () {
       if (!started) { api.start(); return; }
       muted = !muted;
@@ -92,7 +92,7 @@
       start: function () {
         if (started) return;
         started = true; song.volume = 0;
-        // skip the quiet intro; the seek has to wait for metadata if the file is still loading
+        // start at 0:50, the main part of the song; the seek has to wait for metadata if the file is still loading
         var seek = function () { try { if (song.currentTime < START) song.currentTime = START; } catch (e) {} };
         if (song.readyState >= 1) seek(); else song.addEventListener('loadedmetadata', seek, { once: true });
         play(); fade(BASE, 3); ui();
