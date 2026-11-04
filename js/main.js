@@ -29,13 +29,17 @@
         imgs[i] = im;
       });
     };
-    this.size = function () {
-      // frames are 1440 wide: a canvas larger than the source only costs fill rate
-      var k = Math.min(DPR, Math.max(1, 1440 / Math.max(canvas.clientWidth, 1)));
-      canvas.width = Math.round(canvas.clientWidth * k);
-      canvas.height = Math.round(canvas.clientHeight * k);
-      this.draw();
-    };
+    // frames are 1440 wide: a canvas larger than the source only costs fill rate.
+    // Checked on every draw, because a page opened in a background tab lays out at 0x0.
+    function fit() {
+      var cw = canvas.clientWidth, ch = canvas.clientHeight;
+      if (!cw || !ch) return false;
+      var k = Math.min(DPR, Math.max(1, 1440 / cw));
+      var w = Math.round(cw * k), h = Math.round(ch * k);
+      if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+      return true;
+    }
+    this.size = function () { this.draw(); };
     this.progress = function (v) {
       var prev = Math.round(p * (count - 1));
       p = clamp(v, 0, 1);
@@ -47,7 +51,7 @@
         if (want - d >= 0 && ok[want - d]) { k = want - d; break; }
         if (want + d < count && ok[want + d]) { k = want + d; break; }
       }
-      if (k < 0) return;
+      if (k < 0 || !fit()) return;
       var im = imgs[k], W = canvas.width, H = canvas.height;
       var s = Math.max(W / im.naturalWidth, H / im.naturalHeight);
       var w = im.naturalWidth * s, h = im.naturalHeight * s;
@@ -83,6 +87,7 @@
     cake.load();
     popHearts(innerWidth / 2, innerHeight / 2, 18);
     ScrollTrigger.refresh();
+    sizeAll(); placeFlames();
   });
 
   /* ---------- smooth scroll ---------- */
