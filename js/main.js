@@ -69,6 +69,47 @@
   var gift = new Film($('#giftFilm'), 'assets/seq/gift', 120, 'webp');
   var cake = new Film($('#cakeFilm'), 'assets/seq/cake', 72, 'webp');
 
+  /* ---------- music: "This Town" starts on the tap that opens the present ---------- */
+  var music = (function () {
+    var song = $('#song'), btn = $('#soundBtn'), START = 7.5, BASE = 0.55;
+    var started = false, muted = false, ducked = false;
+    function fade(v, s, done) { gsap.to(song, { volume: v, duration: s, ease: 'sine.inOut', overwrite: true, onComplete: done }); }
+    function play() { var pr = song.play(); if (pr) pr.catch(function () {}); }
+    function ui() { var on = started && !muted && !ducked; btn.classList.toggle('off', !on); btn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+    song.addEventListener('ended', function () { song.currentTime = START; play(); });   // loop past the quiet intro
+    btn.addEventListener('click', function () {
+      if (!started) { api.start(); return; }
+      muted = !muted;
+      if (muted) fade(0, 0.6, function () { song.pause(); });
+      else if (!ducked) { play(); fade(BASE, 1.2); }
+      ui();
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (!started || muted || ducked) return;
+      if (document.hidden) song.pause(); else play();
+    });
+    var api = {
+      start: function () {
+        if (started) return;
+        started = true; song.volume = 0;
+        // skip the quiet intro; the seek has to wait for metadata if the file is still loading
+        var seek = function () { try { if (song.currentTime < START) song.currentTime = START; } catch (e) {} };
+        if (song.readyState >= 1) seek(); else song.addEventListener('loadedmetadata', seek, { once: true });
+        play(); fade(BASE, 3); ui();
+      },
+      duck: function (on) {
+        if (on === ducked) return;
+        ducked = on;
+        if (!started || muted) return ui();
+        if (on) fade(0, 0.4, function () { song.pause(); });
+        else { play(); fade(BASE, 1.2); }
+        ui();
+      },
+      swell: function () { if (started && !muted && !ducked) { fade(0.8, 1.5); setTimeout(function () { if (!muted && !ducked) fade(BASE, 4); }, 9000); } }
+    };
+    return api;
+  })();
+
   /* ---------- gate ---------- */
   var lenis = null;
   var gate = $('#gate'), gateBtn = $('#gateBtn');
@@ -82,6 +123,7 @@
   gift.load();
   gateBtn.addEventListener('click', function () {
     gate.classList.add('open');
+    music.start();
     document.documentElement.classList.remove('locked');
     if (lenis) lenis.start();
     cake.load();
@@ -311,6 +353,7 @@
   function blow() {
     if (cakeSec.classList.contains('blown')) return;
     cakeSec.classList.add('blown');
+    music.swell();
     smoke.width = smoke.clientWidth * DPR; smoke.height = smoke.clientHeight * DPR;
     FLAMES.forEach(function (f) {
       var pt = coverPoint(smoke, f[0], f[1]);
@@ -404,6 +447,7 @@
     if (lenis) lenis.stop();
   }
   function closeLB() {
+    music.duck(false);
     lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
     var v = $('video', lbBody); if (v) v.pause();
     setTimeout(function () { lbBody.innerHTML = ''; }, 400);
@@ -411,6 +455,7 @@
   }
   function openImage(img) { var i = new Image(); i.src = img.getAttribute('src'); i.alt = img.alt; openLB(i); }
   function openVideo(src) {
+    music.duck(true);
     var v = document.createElement('video'); v.src = src; v.controls = true; v.autoplay = true; v.playsInline = true; openLB(v);
     var pr = v.play(); if (pr) pr.catch(function () {});
   }

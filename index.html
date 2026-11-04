@@ -41,7 +41,10 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.6 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg>
     <span>Open your present</span>
   </button>
+  <p class="mono gate-sound">Best with sound on</p>
 </div>
+
+<audio id="song" src="assets/audio/this-town.mp3" preload="auto"></audio>
 
 <canvas class="hearts" id="hearts" aria-hidden="true"></canvas>
 <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
@@ -50,6 +53,7 @@
 <header class="nav">
   <a class="nav-mark script" href="#hero" data-goto="#hero">N</a>
   <span class="mono nav-title" id="navTitle">The present</span>
+  <button class="nav-sound off" id="soundBtn" aria-label="Music on or off" aria-pressed="false"><i></i><i></i><i></i><i></i></button>
   <span class="mono nav-count"><span id="navNum">01</span> / 08</span>
   <i class="nav-line" id="navLine"></i>
 </header>
