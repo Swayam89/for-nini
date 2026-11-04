@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For Nini</title>
+<meta name="description" content="A birthday present for Mridu.">
+<meta name="theme-color" content="#120607">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+<script>document.documentElement.classList.add('js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('rm');</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+  import * as THREE from 'three';
+  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+  window.THREE = THREE; window.RoomEnvironment = RoomEnvironment;
+  window.dispatchEvent(new Event('three:ready'));
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+<script defer src="js/hearts.js"></script>
+<script defer src="js/main.js"></script>
+</head>
+<body>
+
+<!-- the gate: frames load behind it, a tap opens the present -->
+<div class="gate" id="gate">
+  <div class="gate-glow"></div>
+  <p class="mono gate-kicker">05 &middot; 11 &middot; 2026</p>
+  <h1 class="gate-title"><span class="script">for Nini</span></h1>
+  <p class="gate-sub">a present, wrapped in light</p>
+  <div class="gate-meter"><span id="gateBar"></span></div>
+  <p class="mono gate-count"><span id="gateCount">000</span></p>
+  <button class="btn btn-gold gate-btn" id="gateBtn" disabled>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.6 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z"/></svg>
+    <span>Open your present</span>
+  </button>
+</div>
+
+<canvas class="hearts" id="hearts" aria-hidden="true"></canvas>
+<canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="nav-mark script" href="#hero" data-goto="#hero">N</a>
+  <span class="mono nav-title" id="navTitle">The present</span>
+  <span class="mono nav-count"><span id="navNum">01</span> / 08</span>
+  <i class="nav-line" id="navLine"></i>
+</header>
+
+<main>
+
+<!-- 01 · the gift (Blender film, scrubbed) -->
+<section class="sec sec-hero" id="hero" data-title="The present" data-num="01">
+  <canvas class="film" id="giftFilm" aria-hidden="true"></canvas>
+  <div class="hero-vignette"></div>
+  <div class="hero-copy" id="heroCopy1">
+    <p class="mono kicker">Happy Birthday</p>
+    <h2 class="hero-name"><span class="script shine" id="heroName">Mridu</span></h2>
+    <p class="hero-line">My Nini. Today the whole internet is yours.</p>
+  </div>
+  <div class="hero-copy hero-copy-2" id="heroCopy2">
+    <p class="serif hero-mid">Open it slowly.<br>Everything inside is <em>you</em>.</p>
+  </div>
+  <div class="scroll-hint" id="scrollHint"><span class="mono">Scroll to untie the ribbon</span><i></i></div>
+  <div class="portal" id="heroPortal"></div>
+</section>
+
+<!-- 02 · memories tunnel (CSS 3D, camera flies forward) -->
+<section class="sec sec-memories depth" id="memories" data-title="Us, everywhere" data-num="02" data-track="memories">
+  <div class="dust-bg"></div>
+  <div class="world">
+    <div class="item title-card" data-x="0" data-y="0" data-z="0">
+      <p class="mono kicker dark">Chapter one</p>
+      <h2 class="serif big">Us, <em>everywhere</em></h2>
+      <p class="sub">Car rides, pandals, elevators. Every silly face counts.</p>
+    </div>
+    <figure class="item polaroid" data-x="-27" data-y="-4" data-z="1700" data-r="-5"><img src="assets/photos/1.jpg" alt="Selfie in the car under red light"><figcaption class="script">late-night rides</figcaption></figure>
+    <figure class="item polaroid" data-x="26" data-y="5" data-z="2650" data-r="4"><img src="assets/photos/3.jpg" alt="Selfie, heads together in the back seat"><figcaption class="script">your head, my shoulder</figcaption></figure>
+    <figure class="item polaroid tall" data-x="-24" data-y="3" data-z="3600" data-r="3"><img src="assets/photos/2.jpg" alt="Selfie at the Ganpati pandal"><figcaption class="script">Bappa saw everything</figcaption></figure>
+    <figure class="item polaroid" data-x="25" data-y="-5" data-z="4550" data-r="-4"><img src="assets/photos/4.jpg" alt="Laughing selfie with a peace sign"><figcaption class="script">that laugh</figcaption></figure>
+    <figure class="item polaroid tall" data-x="-26" data-y="-2" data-z="5500" data-r="-3"><img src="assets/photos/5.jpg" alt="Both sticking tongues out"><figcaption class="script">certified idiots</figcaption></figure>
+    <figure class="item polaroid tall" data-x="24" data-y="4" data-z="6450" data-r="5"><img src="assets/photos/6.jpg" alt="Standing together in front of Ganpati"><figcaption class="script">darshan, together</figcaption></figure>
+    <figure class="item polaroid tall hero-pol" data-x="0" data-y="0" data-z="7600" data-r="-2"><img src="assets/photos/7.jpg" alt="Smiling together in front of the Ganpati idol"><figcaption class="script">my favourite photo of us</figcaption></figure>
+  </div>
+</section>
+
+<!-- 03 · statement, read word by word -->
+<section class="sec sec-words" id="words" data-title="A small truth" data-num="03">
+  <p class="statement serif" id="statement">Nini, some people walk into your life and the whole world gets warmer. You laugh like nobody is watching, you love like it is easy, and somehow you chose me. You are my favourite person, my safest place, and my best adventure.</p>
+</section>
+
+<!-- 04 · garba ring (CSS 3D carousel; scroll and drag) -->
+<section class="sec sec-garba" id="garba" data-title="Rang Ratri nights" data-num="04">
+  <div class="bokeh"></div>
+  <p class="garba-word serif" id="garbaWord" aria-hidden="true">Rang Ratri &middot; Rang Ratri &middot; Rang Ratri &middot;</p>
+  <div class="garba-head">
+    <p class="mono kicker">Chapter two &middot; Navratri 2026</p>
+    <h2 class="serif big">Nine nights, <em>one partner</em></h2>
+  </div>
+  <div class="ring-stage" id="ringStage">
+    <div class="ring" id="ring">
+      <figure class="card"><img src="assets/photos/13.jpg" alt="Posing under the chandelier at garba"></figure>
+      <figure class="card"><img src="assets/photos/15.jpg" alt="Dancing garba, mid spin"></figure>
+      <figure class="card"><img src="assets/photos/9.jpg" alt="Smiling under the string lights"></figure>
+      <figure class="card"><img src="assets/photos/10.jpg" alt="Selfie with a pout at garba"></figure>
+      <figure class="card"><img src="assets/photos/14.jpg" alt="Standing together in the garba hall"></figure>
+      <figure class="card"><img src="assets/photos/11.jpg" alt="Forehead kiss and a tongue out"></figure>
+      <figure class="card"><img src="assets/photos/12.jpg" alt="A hug among the dancers"></figure>
+      <figure class="card"><img src="assets/photos/16.jpg" alt="At the Rang Ratri 3.0 arch"></figure>
+      <figure class="card"><img src="assets/photos/8.jpg" alt="A cheek kiss in the crowd"></figure>
+    </div>
+  </div>
+  <p class="mono garba-hint">Drag to spin &middot; tap a photo</p>
+</section>
+
+<!-- 05 · up close (zoom-through) -->
+<section class="sec sec-close depth" id="close" data-title="Up close" data-num="05" data-track="close">
+  <div class="world">
+    <div class="item word" data-x="0" data-y="0" data-z="0"><p class="mono kicker">Chapter three</p><h2 class="serif huge">closer</h2></div>
+    <figure class="item shot" data-x="0" data-y="0" data-z="1500"><img src="assets/photos/17.jpg" alt="A cheek kiss in the sun"></figure>
+    <div class="item word" data-x="0" data-y="0" data-z="3000"><h2 class="serif huge"><em>closer</em></h2></div>
+    <figure class="item shot" data-x="-6" data-y="0" data-z="4500"><img src="assets/photos/18.jpg" alt="A cheek kiss at night"></figure>
+    <figure class="item shot" data-x="6" data-y="0" data-z="6000"><img src="assets/photos/19.jpg" alt="A blurry cheek kiss"></figure>
+    <figure class="item shot tall" data-x="0" data-y="0" data-z="7500"><img src="assets/photos/20.jpg" alt="Her kissing his cheek"></figure>
+    <div class="item word" data-x="0" data-y="0" data-z="9000"><h2 class="script huge rose">always</h2></div>
+  </div>
+</section>
+
+<!-- 06 · moving pictures -->
+<section class="sec sec-films" id="films" data-title="Moving pictures" data-num="06">
+  <div class="films-head">
+    <p class="mono kicker">Chapter four</p>
+    <h2 class="serif big">Proof we are <em>both</em> this silly</h2>
+    <p class="sub light">Hover to play, tap to watch with sound.</p>
+  </div>
+  <div class="vwall">
+    <button class="vcard" data-speed="-0.25" style="--z:50px;--r:-5deg"><video src="assets/videos/v1.mp4" poster="assets/videos/v1.jpg" muted loop playsinline preload="metadata"></video><span class="mono vtag">01</span></button>
+    <button class="vcard" data-speed="0.15" style="--z:-30px;--r:4deg"><video src="assets/videos/v2.mp4" poster="assets/videos/v2.jpg" muted loop playsinline preload="metadata"></video><span class="mono vtag">02</span></button>
+    <button class="vcard wide" data-speed="-0.1" style="--z:70px;--r:0deg"><video src="assets/videos/v4.mp4" poster="assets/videos/v4.jpg" muted loop playsinline preload="metadata"></video><span class="mono vtag">03</span></button>
+    <button class="vcard" data-speed="0.3" style="--z:-50px;--r:-3deg"><video src="assets/videos/v3.mp4" poster="assets/videos/v3.jpg" muted loop playsinline preload="metadata"></video><span class="mono vtag">04</span></button>
+    <button class="vcard" data-speed="-0.2" style="--z:20px;--r:5deg"><video src="assets/videos/v5.mp4" poster="assets/videos/v5.jpg" muted loop playsinline preload="metadata"></video><span class="mono vtag">05</span></button>
+  </div>
+</section>
+
+<!-- 07 · the letter (paper rises out of the dark) -->
+<section class="sec sec-letter" id="letter" data-title="A letter" data-num="07">
+  <div class="letter-stage">
+    <article class="paper" id="paper">
+      <p class="mono kicker dark">For Mridu &middot; 05.11.2026</p>
+      <p class="script greet">My Nini,</p>
+      <p class="line">Happy birthday to the girl who makes ordinary days feel like festivals.</p>
+      <p class="line">Thank you for every car ride, every garba round, every stupid face you pull just to make me laugh, and every time you held my hand like it was the most natural thing in the world.</p>
+      <p class="line">I hope this year gives you everything you keep wishing for quietly. And I hope I get to be right there, standing next to you, for all of it.</p>
+      <p class="line">I love you. Today, tomorrow, and every birthday after this one.</p>
+      <p class="script sign">Yours, always</p>
+    </article>
+  </div>
+</section>
+
+<!-- 08 · the cake (Blender film) + the wish -->
+<section class="sec sec-cake" id="cake" data-title="Make a wish" data-num="08">
+  <canvas class="film" id="cakeFilm" aria-hidden="true"></canvas>
+  <img class="cake-off" id="cakeOff" src="assets/seq/cake_off/f_0001.webp" alt="" aria-hidden="true">
+  <div class="flames" id="flames" aria-hidden="true"></div>
+  <canvas class="smoke" id="smoke" aria-hidden="true"></canvas>
+  <div class="cake-copy" id="cakeCopy">
+    <p class="mono kicker">Last chapter</p>
+    <h2 class="serif big">Make a wish, <em>Nini</em></h2>
+    <button class="btn btn-gold" id="blowBtn">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h10a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg>
+      <span>Blow out the candles</span>
+    </button>
+  </div>
+  <div class="cake-final" id="cakeFinal">
+    <p class="mono kicker">Wish made</p>
+    <h2 class="final-title"><span class="serif">Happy Birthday,</span><span class="script shine">Mridu</span></h2>
+    <p class="final-line">I love you, Nini.</p>
+    <button class="btn btn-ghost" id="relightBtn">Light them again</button>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p class="script foot-big">for Nini, with all my love</p>
+  <p class="mono">05 &middot; 11 &middot; 2026 &middot; made by hand, one frame at a time</p>
+  <button class="btn btn-ghost" data-goto="#hero">Open it again</button>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close mono" id="lbClose">Close</button>
+  <div class="lb-body" id="lbBody"></div>
+</div>
+
+</body>
+</html>
